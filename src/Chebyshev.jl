@@ -1,42 +1,33 @@
 """
-    cheb(N)
+    cheb_lobatto_nodes(N)
 
-Return the Chebyshev–Lobatto points `x` and the differentiation matrix `D`
-for order `N`, following Trefethen's implementation.
+Return the `N + 1` Chebyshev–Lobatto points on ``[-1, 1]`` in descending order.
 """
-function cheb(N::Integer)
-    N < 0 && throw(ArgumentError("N must be non-negative"))
-    if N == 0
-        return ones(1), zeros(1, 1)
-    end
-
-    x = cos.(pi .* (0:N) ./ N)
-    c = [2.0; ones(N - 1); 2.0] .* (-1).^(0:N)
-    xcol = reshape(x, N + 1, 1)
-    X = repeat(xcol, 1, N + 1)
-    dX = X .- X'
-    D = (c * (1 ./ c)') ./ (dX + I)
-    D .-= Diagonal(sum(D, dims = 2)[:])
-    return x, D
+function cheb_lobatto_nodes(N::Integer)
+    N < 1 && throw(ArgumentError("N must be at least 1"))
+    nodes = cos.(pi .* (0:N) ./ N)
+    return Vector{Float64}(nodes)
 end
 
 """
-    cheb_lobatto_weights(N)
+    cheb_D_matrices(N)
 
-Return Chebyshev–Lobatto quadrature weights as described in the slides.
+Construct the first- and second-order Chebyshev spectral differentiation
+matrices for ``N + 1`` Chebyshev–Lobatto nodes.
 """
-function cheb_lobatto_weights(N::Integer)
-    N <= 0 && throw(ArgumentError("N must be positive"))
-    weights = zeros(Float64, N + 1)
-    invN2 = 1.0 / (N^2)
-    weights[1] = invN2
-    weights[end] = invN2
-    for j in 2:N
-        if isodd(j - 1)
-            weights[j] = 2 * invN2
-        else
-            weights[j] = 0.0
-        end
-    end
-    return weights
+function cheb_D_matrices(N::Integer)
+    x = cheb_lobatto_nodes(N)
+    n = length(x)
+    c = ones(Float64, n)
+    c[1] = 2.0
+    c[end] = 2.0
+    c .*= (-1.0).^(0:n-1)
+
+    xcol = reshape(x, n, 1)
+    X = repeat(xcol, 1, n)
+    dX = X .- X'
+    D = (c * (1.0 ./ c)') ./ (dX + I)
+    D .-= Diagonal(vec(sum(D, dims = 2)))
+    D2 = D * D
+    return Matrix{Float64}(D), Matrix{Float64}(D2)
 end
