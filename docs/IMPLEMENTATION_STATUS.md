@@ -10,7 +10,19 @@ examples and Julia tests defined in `EXAMPLES_TEST_PLAN.md`.  Contributions
 should reference the cited slides inside `class_slides/` and follow the guidance
 below when preparing scripts, documentation, and automated tests.
 
-## Usage Examples Still Missing
+## Usage Examples
+
+### Completed
+
+| # | Scenario | Artifacts | Key requirements satisfied | Slide references |
+| --- | --- | --- | --- | --- |
+| 1 | Chebyshev linear BVP | `examples/bvp_linear.jl`, `bvp_linear_solution.*` | Variable diffusivity `-(1+x)y'' = sin(πx)` solved on Chebyshev grid, residuals benchmarked against high-N reference. | `PE_Aula_05_N.pdf` |
+| 2 | Diffusion decay | `examples/diffusion.jl`, `diffusion_decay.*` | Heat equation with analytic solution; MOL + RK4 integration, GIF of decay, error reported at \(t=0.05\). | `PE_Aula_06_N.pdf` |
+| 3 | Legendre vs Chebyshev | `examples/bvp_legendre.jl`, `bvp_legendre_error.png` | Legendre Lobatto solution compared to Chebyshev reference via `Generic.Bary_Interp`, log–log convergence study. | `PE_Aula_07_N.pdf`, `PE_Aula_08_N.pdf` |
+| 4 | Nonlinear BVP (`y'' = \sin y`) | `examples/bvp_nonlinear.jl`, `bvp_nonlinear_solution.png` | Newton iteration with analytic derivatives, residual norm < 1e-13, iteration count recorded. | `PE_Aula_06_N.pdf` |
+| 5 | Wave mixed BCs | `examples/wave_mixed_bc.jl`, `wave_mode.*` | Leapfrog with Neumann/Dirichlet boundaries, energy drift analysis, boundary flux verification. | `PE_Aula_10_N.pdf` |
+
+### Missing
 
 | # | Scenario | Requirements | Slide references |
 | --- | --- | --- | --- |
@@ -27,7 +39,19 @@ below when preparing scripts, documentation, and automated tests.
 3. Documentation snippet added to `docs/USAGE_EXAMPLES.md` and the HTML gallery
    (`docs/web/examples.html`) summarizing the new scenario.
 
-## Julia Tests Still Missing
+## Julia Tests
+
+### Completed
+
+| # | Test description | Location | What it verifies | Linked example |
+| --- | --- | --- | --- | --- |
+| 1 | Chebyshev BVP residual | `test/runtests.jl` – “Chebyshev BVP residual” | Interior residual < 1e-9 and BC enforcement for Example 1. | Example 1 |
+| 2 | Legendre grid properties | “Legendre grid properties” | Symmetric nodes & `D₁` annihilates constants for Example 3. | Example 3 |
+| 3 | Nonlinear BVP convergence | “Nonlinear BVP convergence” | Newton converges ≤ 8 iterations, residual < 1e-8. | Example 4 |
+| 4 | Diffusion analytic comparison | “Diffusion analytic comparison” | MOL + RK4 error vs analytic solution + time-step refinement ratio. | Example 2 |
+| 5 | Wave energy mixed BCs | “Wave energy mixed BCs” | Energy drift bound and Neumann flux agreement for Example 5. | Example 5 |
+
+### Missing
 
 | # | Test description | Requirements | Linked example |
 | --- | --- | --- | --- |
