@@ -4,8 +4,8 @@
 # Problem matches Example 1, allowing direct comparison against a
 # Chebyshev reference interpolated via barycentric interpolation.
 
-using SpectralTools
-using SpectralTools: Generic
+using PoliSpectralTools
+using PoliSpectralTools: Generic
 using Printf
 
 a(x) = -(1 + x)

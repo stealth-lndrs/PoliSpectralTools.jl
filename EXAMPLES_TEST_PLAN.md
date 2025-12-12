@@ -1,7 +1,7 @@
 # Usage Examples and Test Plan
 
 This guide enumerates ten showcase examples and ten regression tests that demonstrate the
-current SpectralTools capabilities. Each contributor can pick any combination of usage examples
+current PoliSpectralTools capabilities. Each contributor can pick any combination of usage examples
 and tests to implement independently. The expectations are simply that every selected item gains a
 script under `examples/` and a matching automated test in `test/` (when applicable).
 
@@ -63,7 +63,7 @@ script under `examples/` and a matching automated test in `test/` (when applicab
 
 ### 10. Mapping Prototype (Optional Extension)
 - **Problem**: If `Mapping.jl` is added, illustrate transforming `ξ ∈ [-1, 1]` to `x = sin(π ξ / 2)` for boundary-layer clustering. Apply to linear BVP and compare error vs. standard grid.
-- **Tools**: hypothetical `SpectralTools.Mapping.simple_map` applied before `build_grid`.
+- **Tools**: hypothetical `PoliSpectralTools.Mapping.simple_map` applied before `build_grid`.
 - **Outputs**: node plots, error improvements near boundaries.
 - **Hypothesis**: Conformal mappings reduce error for localized features.
 

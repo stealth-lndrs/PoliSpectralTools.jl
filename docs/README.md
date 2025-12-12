@@ -1,6 +1,6 @@
 # Documentation Notes
 
-This folder hosts high-level documentation for SpectralTools.jl.  It is intentionally lightweight so
+This folder hosts high-level documentation for PoliSpectralTools.jl.  It is intentionally lightweight so
 students can expand it with worked examples or migrate it to Documenter.jl later.
 
 ## Suggested Layout

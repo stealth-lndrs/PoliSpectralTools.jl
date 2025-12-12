@@ -4,7 +4,7 @@
 # Demonstrates solve_nonlinear_bvp with analytic derivatives and reports
 # Newton convergence diagnostics.
 
-using SpectralTools
+using PoliSpectralTools
 using LinearAlgebra: norm
 using Printf
 

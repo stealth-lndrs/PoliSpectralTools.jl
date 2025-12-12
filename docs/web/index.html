@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>SpectralTools.jl – Overview</title>
+    <title>PoliSpectralTools.jl – Overview</title>
     <style>
       body { font-family: "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #1f2933; }
       header { background: linear-gradient(120deg, #1f8ef1, #3358f4); color: #fff; padding: 2rem; }
@@ -20,17 +20,17 @@
   </head>
   <body>
     <header>
-      <h1>SpectralTools.jl</h1>
+      <h1>PoliSpectralTools.jl</h1>
       <p>Boundary-value and PDE solvers built on spectral collocation (Chebyshev and Legendre) for Julia.</p>
     </header>
     <main>
       <section>
         <h2>Get Started</h2>
         <pre>
-julia> using Pkg; Pkg.activate(\"SpectralTools\")
+julia> using Pkg; Pkg.activate(\"PoliSpectralTools\")
 julia> Pkg.instantiate()
-julia> using SpectralTools
-julia> using SpectralTools.Chebyshev, SpectralTools.BVP
+julia> using PoliSpectralTools
+julia> using PoliSpectralTools.Chebyshev, PoliSpectralTools.BVP
         </pre>
       </section>
 
@@ -87,7 +87,7 @@ julia> using SpectralTools.Chebyshev, SpectralTools.BVP
           <tr><td>9</td><td>Poisson rectangular domain</td><td class="status-pending">In progress</td></tr>
           <tr><td>10</td><td>Mapping-enhanced solver</td><td class="status-pending">In progress</td></tr>
         </table>
-        <p>See <code>EXAMPLES_TEST_PLAN.md</code> for example/test definitions.</p>
+        <p>See <code>EXAMPLES_TEST_PLAN.md</code> or the <a href="examples.html">detailed example guide</a> for definitions.</p>
       </section>
 
       <section>

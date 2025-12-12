@@ -1,5 +1,5 @@
 #!/usr/bin/env julia
-using SpectralTools
+using PoliSpectralTools
 
 κ = 1.0
 tspan = (0.0, 0.05)

@@ -6,8 +6,8 @@
 # Goal: demonstrate solve_linear_bvp with Chebyshev Lobatto grid and
 # verify the discrete residual of the manufactured operator.
 
-using SpectralTools
-using SpectralTools: Collocation
+using PoliSpectralTools
+using PoliSpectralTools: Collocation
 using LinearAlgebra
 using Printf
 

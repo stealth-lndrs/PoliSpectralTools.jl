@@ -1,5 +1,5 @@
 
-module SpectralTools
+module PoliSpectralTools
 
 include("Generic.jl")
 include("Chebyshev.jl")

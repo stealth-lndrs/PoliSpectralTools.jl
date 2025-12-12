@@ -2,6 +2,7 @@
 
 using Test
 using Printf
+using Dates
 
 const COUNT_KEYS = (:passes, :fails, :errors, :broken)
 const CountTuple = NamedTuple{COUNT_KEYS, NTuple{4, Int}}
@@ -9,7 +10,7 @@ const CountTuple = NamedTuple{COUNT_KEYS, NTuple{4, Int}}
 const PROJECT_ROOT = normpath(joinpath(@__DIR__, ".."))
 
 function run_test_suite()
-    return @testset "SpectralTools" begin
+    return @testset "PoliSpectralTools" begin
         include(joinpath(PROJECT_ROOT, "test", "runtests.jl"))
     end
 end
@@ -139,10 +140,16 @@ function print_coverage(entries)
 end
 
 function main()
+    report_dir = joinpath(PROJECT_ROOT, "reports")
+    isdir(report_dir) || mkpath(report_dir)
+    timestamp = Dates.format(Dates.now(), "yyyy-mm-dd_HHMMSS")
+    report_path = joinpath(report_dir, "test_report_$(timestamp).md")
+
+    buffer = IOBuffer()
     ts = run_test_suite()
     counts = aggregate_counts(ts)
     status = (counts.fails == 0 && counts.errors == 0) ? "PASS" : "FAIL"
-    println("=== SpectralTools – Full Package Test Report ===")
+    println("=== PoliSpectralTools – Full Package Test Report ===")
     println("Status: ", status)
     show_result(stdout, "Overall", counts)
     println()
@@ -172,6 +179,77 @@ function main()
     entries = coverage_summary()
     println()
     print_coverage(entries)
+
+    # Markdown report
+    io = buffer
+    println(io, "# PoliSpectralTools – Full Package Test Report")
+    println(io)
+    println(io, "- Timestamp: ", timestamp)
+    println(io, "- Status: ", status)
+    println(io, "- Overall: passes=$(counts.passes), fails=$(counts.fails), errors=$(counts.errors), broken=$(counts.broken)")
+    println(io)
+    println(io, "## Testsets Passing Cleanly")
+    if isempty(successes)
+        println(io, "- (none)")
+    else
+        for (label, ct) in successes
+            println(io, "- **", strip(label), "**: passes=$(ct.passes), fails=$(ct.fails), errors=$(ct.errors), broken=$(ct.broken)")
+        end
+    end
+    println(io)
+    println(io, "## Testsets with Issues")
+    if isempty(problematic)
+        println(io, "- (none)")
+    else
+        for (label, ct) in problematic
+            println(io, "- **", strip(label), "**: passes=$(ct.passes), fails=$(ct.fails), errors=$(ct.errors), broken=$(ct.broken)")
+        end
+    end
+    println(io)
+
+    function write_failures(section, entries)
+        println(io, section)
+        if isempty(entries)
+            println(io, "\n- (none)\n")
+            return
+        end
+        for (path, item) in entries
+            location = join(path, " → ")
+            println(io, "- **", isempty(location) ? "(root)" : location, "**")
+            src = getproperty(item, :source)
+            if src !== nothing
+                println(io, "  - Location: `", src.file, ":", src.line, "`")
+            end
+            buf = IOBuffer()
+            show(buf, item)
+            msg = replace(String(take!(buf)), '\n' => "\n    ")
+            println(io, "  - Detail:\n\n        ", msg, "\n")
+        end
+    end
+
+    write_failures("## Failures", fails)
+    write_failures("## Errors", errors)
+
+    println(io, "## Coverage Summary")
+    if isempty(entries)
+        println(io, "- No coverage artifacts found. Run with `--code-coverage=user` to collect data.")
+    else
+        total_cov = 0
+        total_lines = 0
+        for (name, covered, total) in entries
+            total_lines += total
+            total_cov += covered
+            pct = total == 0 ? 100.0 : 100 * covered / total
+            println(io, "- `", name, "`: $(round(pct; digits=2))% ($covered/$total)")
+        end
+        pct_total = total_lines == 0 ? 100.0 : 100 * total_cov / total_lines
+        println(io, "- **TOTAL**: $(round(pct_total; digits=2))% ($total_cov/$total_lines)")
+    end
+
+    open(report_path, "w") do f
+        write(f, String(take!(io)))
+    end
+    println("Report saved to ", report_path)
 end
 
 main()

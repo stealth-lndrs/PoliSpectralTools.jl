@@ -1,10 +1,10 @@
 using Test
-using SpectralTools
+using PoliSpectralTools
 using LinearAlgebra: norm, Diagonal, dot
-using SpectralTools: Generic
-using SpectralTools.BVP
-using SpectralTools.PDE
-using SpectralTools.Collocation
+using PoliSpectralTools: Generic
+using PoliSpectralTools.BVP
+using PoliSpectralTools.PDE
+using PoliSpectralTools.Collocation
 
 @testset "Generic Utilities" begin
     @testset "Barycentric interpolation" begin

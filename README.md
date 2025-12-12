@@ -1,6 +1,6 @@
-# SpectralTools – Plano do Projeto Final
+# PoliSpectralTools – Plano do Projeto Final
 
-Este documento descreve o plano de desenvolvimento do pacote **SpectralTools.jl**,
+Este documento descreve o plano de desenvolvimento do pacote **PoliSpectralTools.jl**,
 utilizado como projeto final da disciplina **Introdução aos Métodos Espectrais**.
 
 ---
@@ -11,16 +11,16 @@ utilizado como projeto final da disciplina **Introdução aos Métodos Espectrai
 julia --project=.
 using Pkg
 Pkg.instantiate()
-using SpectralTools
+using PoliSpectralTools
 ```
 
 O pacote exporta **submódulos** em vez de colocar todas as funções no escopo
-principal. Após `using SpectralTools`, importe cada ferramenta de forma
+principal. Após `using PoliSpectralTools`, importe cada ferramenta de forma
 qualificada, por exemplo:
 
 ```julia
-using SpectralTools.Chebyshev: ChebyshevTransform, ChebyQuadrature
-using SpectralTools.BVP: solve_linear_bvp
+using PoliSpectralTools.Chebyshev: ChebyshevTransform, ChebyQuadrature
+using PoliSpectralTools.BVP: solve_linear_bvp
 ```
 
 ---
@@ -47,9 +47,9 @@ referência principal:
 ## 1. Estrutura do Pacote
 
 ```
-SpectralTools/
+PoliSpectralTools/
 ├── src/
-│   ├── SpectralTools.jl       # módulo principal e reexportações
+│   ├── PoliSpectralTools.jl       # módulo principal e reexportações
 │   ├── Chebyshev.jl           # ferramentas base Chebyshev
 │   ├── Legendre.jl            # ferramentas base Legendre
 │   ├── Fourier.jl             # ferramentas base Fourier
@@ -64,7 +64,7 @@ SpectralTools/
 └── class_slides/             # PDFs das aulas
 ```
 
-O módulo `SpectralTools.jl` expõe todos os submódulos e reexporta os solvers de
+O módulo `PoliSpectralTools.jl` expõe todos os submódulos e reexporta os solvers de
 alto nível (`solve_linear_bvp`, `solve_diffusion_1d`, etc.).
 
 ---
@@ -148,7 +148,7 @@ Scripts em `examples/` demonstram o uso das rotinas (BVP linear, difusão etc.).
 - **Dupla 4 – Poisson 2D + mapeamentos** *(base: `PE_Aula_09_N.pdf`, pp. 8–19)*  
   - `src/PDE.jl`: concluir `solve_poisson_2d` com a forma de Sylvester
     `kron(I, Dy^2) + kron(Dx^2, I)` e BCs Dirichlet dos slides.  
-  - Opcional: adicionar `src/Mapping.jl` (incluído em `SpectralTools.jl`) com utilitários
+  - Opcional: adicionar `src/Mapping.jl` (incluído em `PoliSpectralTools.jl`) com utilitários
     de mapas conformes simples (ex.: `x = sin(ξ)`).  
   - `examples/` + `test/`: reproduzir o Programa 16 e estudar variação de erro.
 
@@ -166,6 +166,7 @@ resumo no PR.
 ## 9. Documentação para Usuários
 
 - Consulte `docs/USER_GUIDE.md` para instruções detalhadas de instalação, API e progresso de exemplos/testes.
+- Use `docs/USAGE_EXAMPLES.md` (ou `docs/web/examples.html`) para ver os cinco estudos de caso completos, com formulações matemáticas, figuras e comparações analíticas.
 - A versão web em `docs/web/index.html` (publicável via GitHub Pages) mostra um resumo interativo com figuras.
 
 ## 10. Relatório Completo de Testes + Cobertura

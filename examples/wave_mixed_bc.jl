@@ -2,8 +2,8 @@
 #
 # Usage Example 5: Wave equation with mixed Neumann/Dirichlet boundary conditions.
 
-using SpectralTools
-using SpectralTools.Collocation: build_grid
+using PoliSpectralTools
+using PoliSpectralTools.Collocation: build_grid
 using LinearAlgebra: norm
 using Printf
 

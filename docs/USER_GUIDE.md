@@ -1,23 +1,23 @@
-# SpectralTools.jl – User Guide
+# PoliSpectralTools.jl – User Guide
 
-This guide explains how to install SpectralTools, summarizes the major modules,
+This guide explains how to install PoliSpectralTools, summarizes the major modules,
 and documents each solver so that users can quickly evaluate boundary-value and
 time-dependent PDE problems via spectral collocation.
 
 ## Installation and Quick Start
 
 ```julia
-julia> import Pkg; Pkg.add(path=\"/path/to/SpectralTools\") # until the package is registered
-julia> using SpectralTools
+julia> import Pkg; Pkg.add(path=\"/path/to/PoliSpectralTools\") # until the package is registered
+julia> using PoliSpectralTools
 # inspect submodules
-julia> SpectralTools.Collocation
+julia> PoliSpectralTools.Collocation
 ```
 
 To develop locally:
 
 ```julia
-$ git clone <repo-url> SpectralTools
-$ cd SpectralTools
+$ git clone <repo-url> PoliSpectralTools
+$ cd PoliSpectralTools
 $ julia --project=.
 julia> using Pkg
 julia> Pkg.instantiate()
@@ -33,20 +33,20 @@ julia> include(\"test/runtests.jl\")
 
 | Module | Purpose |
 | --- | --- |
-| `SpectralTools.Generic` | Barycentric interpolation, generalized differentiation matrices, polynomial tools |
-| `SpectralTools.Chebyshev`, `SpectralTools.Legendre`, `SpectralTools.Fourier` | Basis-specific transforms, quadrature, differentiation |
-| `SpectralTools.Collocation` | `SpectralGrid` type and `build_grid` helper for Chebyshev/Legendre Lobatto nodes |
-| `SpectralTools.BoundaryConditions` | Normalization of 1D/2D boundary specifications (`Dirichlet`, `Neumann`, `Robin`) |
-| `SpectralTools.BVP` | Linear and nonlinear boundary-value problem solvers |
-| `SpectralTools.PDE` | Time-dependent solvers: diffusion (MOL+RK4), wave (leapfrog), Poisson (Kronecker) |
+| `PoliSpectralTools.Generic` | Barycentric interpolation, generalized differentiation matrices, polynomial tools |
+| `PoliSpectralTools.Chebyshev`, `PoliSpectralTools.Legendre`, `PoliSpectralTools.Fourier` | Basis-specific transforms, quadrature, differentiation |
+| `PoliSpectralTools.Collocation` | `SpectralGrid` type and `build_grid` helper for Chebyshev/Legendre Lobatto nodes |
+| `PoliSpectralTools.BoundaryConditions` | Normalization of 1D/2D boundary specifications (`Dirichlet`, `Neumann`, `Robin`) |
+| `PoliSpectralTools.BVP` | Linear and nonlinear boundary-value problem solvers |
+| `PoliSpectralTools.PDE` | Time-dependent solvers: diffusion (MOL+RK4), wave (leapfrog), Poisson (Kronecker) |
 
 ## Feature Reference
 
 ### Collocation and Boundary Setup
 
 ```julia
-grid = SpectralTools.Collocation.build_grid(40; basis = :chebyshev, domain = (-1, 1))
-bc = SpectralTools.BoundaryConditions.normalize_1d_bc((
+grid = PoliSpectralTools.Collocation.build_grid(40; basis = :chebyshev, domain = (-1, 1))
+bc = PoliSpectralTools.BoundaryConditions.normalize_1d_bc((
     left = (:dirichlet, 1.0),
     right = (:neumann, (x, t) -> cos(t))
 ))
@@ -58,7 +58,7 @@ physical domain, along with differentiation matrices `D1`, `D2` already scaled.
 ### Linear Boundary-Value Problems
 
 ```julia
-result = SpectralTools.solve_linear_bvp(a, b, c, rhs;
+result = PoliSpectralTools.solve_linear_bvp(a, b, c, rhs;
     N = 48,
     basis = :chebyshev,     # or :legendre
     domain = (-1.0, 1.0),
@@ -73,7 +73,7 @@ result = SpectralTools.solve_linear_bvp(a, b, c, rhs;
 ### Nonlinear Boundary-Value Problems
 
 ```julia
-sol = SpectralTools.solve_nonlinear_bvp(g;
+sol = PoliSpectralTools.solve_nonlinear_bvp(g;
     dg_dy = (x, y, yp) -> ∂g∂y,
     dg_dyp = (x, y, yp) -> ∂g∂y′,
     initial_guess = x -> 0.0,
@@ -90,7 +90,7 @@ up Newton; if omitted, finite differences are used. Inspect `sol.converged` and
 ### Diffusion (Method of Lines + RK4)
 
 ```julia
-diff = SpectralTools.solve_diffusion_1d(u0, (t0, t1);
+diff = PoliSpectralTools.solve_diffusion_1d(u0, (t0, t1);
     diffusivity = κ,
     N = 48,
     dt = :auto,              # optional manual step
@@ -108,7 +108,7 @@ each Runge–Kutta substep.
 ### Wave Equation (Leapfrog)
 
 ```julia
-wave = SpectralTools.solve_wave_1d(u0, v0, (t0, t1);
+wave = PoliSpectralTools.solve_wave_1d(u0, v0, (t0, t1);
     c = 1.0,
     N = 60,
     dt = :auto,
@@ -123,7 +123,7 @@ restriction `dt ≤ 2/N` for Chebyshev grids.
 ### 2D Poisson (Kronecker Solve)
 
 ```julia
-poisson = SpectralTools.solve_poisson_2d(
+poisson = PoliSpectralTools.solve_poisson_2d(
     (x, y) -> forcing(x, y);
     Nx = 32,
     Ny = 32,
